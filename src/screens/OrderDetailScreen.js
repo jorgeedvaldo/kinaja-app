@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import { useCustomAlert } from '../context/AlertContext';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import OrderTimeline from '../components/order/OrderTimeline';
@@ -21,6 +23,7 @@ const CANCELLABLE = ['pending', 'accepted'];
 export default function OrderDetailScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
   const { order: initialOrder } = route.params;
+  const { showAlert } = useCustomAlert();
   const [order, setOrder] = useState(initialOrder);
   const [loading, setLoading] = useState(false);
   const [cancelling, setCancelling] = useState(false);
@@ -51,30 +54,19 @@ export default function OrderDetailScreen({ route, navigation }) {
         // Update local state immediately
         setOrder((prev) => ({ ...prev, status: 'cancelled' }));
         
-        if (Platform.OS !== 'web') {
-          Alert.alert('Pedido Cancelado', 'O seu pedido foi cancelado com sucesso.');
-        } else {
-          alert('Pedido Cancelado com sucesso!');
-        }
+        showAlert('Pedido Cancelado', 'O seu pedido foi cancelado com sucesso.', [{ text: 'Voltar', onPress: () => navigation.goBack() }]);
       } catch (error) {
         console.error('[DEBUG-CANCEL] API Error:', error.response?.data || error.message);
         const msg = error.response?.data?.message || 'Erro ao cancelar pedido.';
-        Alert.alert('Erro', msg);
+        showAlert('Erro', msg, [{ text: 'OK' }]);
       } finally {
         setCancelling(false);
       }
     };
 
-    if (Platform.OS === 'web') {
-      if (window.confirm('Tem certeza que deseja cancelar este pedido?')) {
-        onConfirm();
-      }
-      return;
-    }
-
-    Alert.alert(
+    showAlert(
       'Cancelar Pedido',
-      'Tem certeza que deseja cancelar este pedido?',
+      'Tem certeza que deseja cancelar este pedido? Esta acção não pode ser desfeita.',
       [
         { text: 'Não', style: 'cancel' },
         {

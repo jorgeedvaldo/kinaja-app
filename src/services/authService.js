@@ -21,12 +21,12 @@ const authService = {
 
   /**
    * Login with phone and password.
-   * @param {string} phone
+   * @param {string} identifier (phone or email)
    * @param {string} password
    * @returns {Promise<{ user, token }>}
    */
-  login: async (phone, password) => {
-    const response = await api.post(ENDPOINTS.login, { phone, password });
+  login: async (identifier, password) => {
+    const response = await api.post(ENDPOINTS.login, { identifier, password });
     return response.data;
   },
 

@@ -12,13 +12,15 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { useCustomAlert } from '../context/AlertContext';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import Button from '../components/common/Button';
 
 export default function LoginScreen({ navigation }) {
   const { login } = useAuth();
-  const [phone, setPhone] = useState('');
+  const { showAlert } = useCustomAlert();
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ export default function LoginScreen({ navigation }) {
 
   const validate = () => {
     const errs = {};
-    if (!phone.trim()) errs.phone = 'O telefone é obrigatório';
+    if (!identifier.trim()) errs.identifier = 'O e-mail ou telefone é obrigatório';
     if (!password) errs.password = 'A password é obrigatória';
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -37,12 +39,12 @@ export default function LoginScreen({ navigation }) {
 
     setLoading(true);
     try {
-      await login(phone.trim(), password);
+      await login(identifier.trim(), password);
       // Navigation handled by AppNavigator
     } catch (error) {
       const message =
-        error.response?.data?.message || 'Credenciais inválidas. Tente novamente.';
-      Alert.alert('Erro no Login', message);
+        error.response?.data?.message || 'E-mail, número ou senha incorrectos. Tente novamente.';
+      showAlert('Erro no Login', message, [{ text: 'OK' }]);
     } finally {
       setLoading(false);
     }
@@ -75,20 +77,21 @@ export default function LoginScreen({ navigation }) {
 
         {/* Phone Input */}
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Telefone</Text>
-          <View style={[styles.inputWrapper, errors.phone && styles.inputError]}>
-            <Feather name="phone" size={18} color={COLORS.textMuted} />
+          <Text style={styles.label}>E-mail ou Telefone</Text>
+          <View style={[styles.inputWrapper, errors.identifier && styles.inputError]}>
+            <Feather name="user" size={18} color={COLORS.textMuted} />
             <TextInput
               style={styles.input}
-              value={phone}
-              onChangeText={(t) => { setPhone(t); setErrors(e => ({ ...e, phone: null })); }}
-              placeholder="+244 9XX XXX XXX"
+              value={identifier}
+              onChangeText={(t) => { setIdentifier(t); setErrors(e => ({ ...e, identifier: null })); }}
+              placeholder="seu@email.com ou +244 9XX XXX XXX"
               placeholderTextColor={COLORS.textLight}
-              keyboardType="phone-pad"
+              keyboardType="default"
               autoCapitalize="none"
+              autoCorrect={false}
             />
           </View>
-          {errors.phone && <Text style={styles.errorText}>{errors.phone}</Text>}
+          {errors.identifier && <Text style={styles.errorText}>{errors.identifier}</Text>}
         </View>
 
         {/* Password Input */}

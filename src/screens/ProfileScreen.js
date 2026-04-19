@@ -10,15 +10,17 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { useCustomAlert } from '../context/AlertContext';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 
 export default function ProfileScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { user, logout } = useAuth();
+  const { showAlert } = useCustomAlert();
 
   const handleLogout = () => {
-    Alert.alert(
+    showAlert(
       'Terminar Sessão',
       'Tem certeza que deseja sair?',
       [
@@ -69,7 +71,7 @@ export default function ProfileScreen({ navigation }) {
     {
       icon: 'info',
       label: 'Sobre o App',
-      onPress: () => Alert.alert('KinaJá', 'Versão 1.0.0\nEntrega rápida em Luanda'),
+      onPress: () => showAlert('KinaJá', 'Versão 1.0.0\nEntrega rápida em Luanda', [{ text: 'OK' }]),
     },
   ];
 

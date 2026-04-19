@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Feather } from '@expo/vector-icons';
@@ -100,67 +101,79 @@ const tabBadgeStyles = StyleSheet.create({
   },
 });
 
-// Main Tab Navigator
-    <Tab.Navigator
-      sceneContainerStyle={{ backgroundColor: COLORS.background }}
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          backgroundColor: COLORS.surface,
-          borderTopLeftRadius: 28,
-          borderTopRightRadius: 28,
-          height: Platform.OS === 'ios' ? 85 : 70,
-          paddingTop: 8,
-          paddingHorizontal: 8,
-          borderTopWidth: 0,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: -8 },
-          shadowOpacity: 0.05,
-          shadowRadius: 16,
-          elevation: 10,
-          // position: 'absolute', // Removed to fix ghosting
-        },
-        tabBarIcon: ({ focused }) => {
-          let iconName;
-          let label;
+// Custom Tab Bar Component
+function CustomTabBar({ state, descriptors, navigation }) {
+  const insets = useSafeAreaInsets();
+  const { itemCount } = useCart();
 
-          switch (route.name) {
-            case 'HomeTab':
-              iconName = 'home';
-              label = 'Início';
-              break;
-            case 'OrdersTab':
-              iconName = 'package';
-              label = 'Pedidos';
-              break;
-            case 'CartTab':
-              iconName = 'shopping-cart';
-              label = 'Carrinho';
-              break;
-            case 'ProfileTab':
-              iconName = 'user';
-              label = 'Perfil';
-              break;
+  const tabs = [
+    { name: 'HomeTab', icon: 'home', label: 'Início' },
+    { name: 'OrdersTab', icon: 'package', label: 'Pedidos' },
+    { name: 'CartTab', icon: 'shopping-cart', label: 'Carrinho' },
+    { name: 'ProfileTab', icon: 'user', label: 'Perfil' },
+  ];
+
+  return (
+    <View
+      style={[
+        styles.tabBarContainer,
+        { paddingBottom: Platform.OS === 'ios' ? insets.bottom : 10 },
+      ]}
+    >
+      {state.routes.map((route, index) => {
+        const isFocused = state.index === index;
+        const tab = tabs[index];
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
           }
+        };
 
-          if (focused) {
-            return (
+        return (
+          <TouchableOpacity
+            key={route.key}
+            onPress={onPress}
+            activeOpacity={0.7}
+            style={styles.tabItem}
+          >
+            {isFocused ? (
               <View style={styles.activeTab}>
-                <Feather name={iconName} size={20} color={COLORS.primary} />
-                <Text style={styles.activeTabLabel}>{label}</Text>
+                <Feather name={tab.icon} size={18} color={COLORS.primary} />
+                <Text style={styles.activeTabLabel}>{tab.label}</Text>
               </View>
-            );
-          }
-
-          return (
-            <View style={styles.inactiveTab}>
-              <Feather name={iconName} size={22} color={COLORS.textMuted} />
-              {route.name === 'CartTab' && <CartBadge />}
-            </View>
-          );
-        },
+            ) : (
+              <View style={styles.inactiveTab}>
+                <Feather name={tab.icon} size={22} color={COLORS.textMuted} />
+                <Text style={styles.inactiveTabLabel}>{tab.label}</Text>
+                {route.name === 'CartTab' && itemCount > 0 && (
+                  <View style={tabBadgeStyles.badge}>
+                    <Text style={tabBadgeStyles.badgeText}>
+                      {itemCount > 99 ? '99+' : itemCount}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )}
+          </TouchableOpacity>
+        );
       })}
+    </View>
+  );
+}
+
+// Main Tab Navigator
+export default function MainTabs() {
+  return (
+    <Tab.Navigator
+      tabBar={(props) => <CustomTabBar {...props} />}
+      sceneContainerStyle={{ backgroundColor: COLORS.background }}
+      screenOptions={{ headerShown: false }}
     >
       <Tab.Screen name="HomeTab" component={HomeStackNav} />
       <Tab.Screen name="OrdersTab" component={OrdersStackNav} />
@@ -171,6 +184,25 @@ const tabBadgeStyles = StyleSheet.create({
 }
 
 const styles = StyleSheet.create({
+  tabBarContainer: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.surface,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingTop: 10,
+    paddingHorizontal: 8,
+    borderTopWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   activeTab: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -179,11 +211,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 16,
-    shadowColor: COLORS.accent,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
   },
   activeTabLabel: {
     fontFamily: FONTS.bold,
@@ -194,7 +221,13 @@ const styles = StyleSheet.create({
   inactiveTab: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    paddingVertical: 6,
     position: 'relative',
+  },
+  inactiveTabLabel: {
+    fontFamily: FONTS.medium,
+    fontSize: 10,
+    color: COLORS.textMuted,
+    marginTop: 2,
   },
 });

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   StatusBar,
+  Animated,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -35,6 +36,8 @@ export default function HomeScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const scrollY = React.useRef(new Animated.Value(0)).current;
 
   const loadData = useCallback(async () => {
     try {
@@ -83,99 +86,134 @@ export default function HomeScreen({ navigation }) {
 
   const firstName = user?.name?.split(' ')[0] || 'Usuário';
 
+  const headerLocationHeight = scrollY.interpolate({
+    inputRange: [0, 60],
+    outputRange: [50, 0],
+    extrapolate: 'clamp',
+  });
+
+  const headerLocationOpacity = scrollY.interpolate({
+    inputRange: [0, 40],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container]}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton} activeOpacity={0.7}>
-          <Feather name="menu" size={22} color={COLORS.textPrimary} />
-        </TouchableOpacity>
-
-        <View style={styles.locationContainer}>
-          <Text style={styles.locationLabel}>Entregar em</Text>
-          <TouchableOpacity style={styles.locationRow} activeOpacity={0.7}>
-            <Text style={styles.locationText}>Luanda, Talatona</Text>
-            <Feather name="chevron-down" size={14} color={COLORS.textPrimary} />
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity
-          style={styles.cartButton}
-          onPress={() => navigation.navigate('CartTab')}
-          activeOpacity={0.8}
+      {/* FIXED ANIMATED HEADER */}
+      <View style={[styles.fixedHeader, { paddingTop: insets.top }]}>
+        <Animated.View
+          style={{
+            height: headerLocationHeight,
+            opacity: headerLocationOpacity,
+            overflow: 'hidden',
+          }}
         >
-          <Feather name="shopping-bag" size={18} color={COLORS.surface} />
-          {itemCount > 0 && (
-            <Badge count={itemCount} style={styles.cartBadge} />
-          )}
-        </TouchableOpacity>
-      </View>
+          <View style={styles.headerTopRow}>
+            <View style={{ width: 38 }} />
 
-      {/* Main Scrollable Content */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={COLORS.primary}
-            colors={[COLORS.primary]}
-          />
-        }
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Greeting & Search */}
-        <View style={styles.greetingSection}>
-          <Text style={styles.greeting}>
-            Olá, {firstName}
-          </Text>
-          <Text style={styles.brandGreeting}>
-            KINA JÁ! <Text style={styles.greetingEmoji}>🍔</Text>
-          </Text>
-        </View>
+            <View style={styles.locationContainer}>
+              <Text style={styles.locationLabel}>Entregar em</Text>
+              <TouchableOpacity style={styles.locationRow} activeOpacity={0.7}>
+                <Text style={styles.locationText}>Luanda, Talatona</Text>
+                <Feather name="chevron-down" size={14} color={COLORS.textPrimary} />
+              </TouchableOpacity>
+            </View>
 
+            <TouchableOpacity
+              style={styles.cartButton}
+              onPress={() => navigation.navigate('CartTab')}
+              activeOpacity={0.8}
+            >
+              <Feather name="shopping-bag" size={18} color={COLORS.surface} />
+              {itemCount > 0 && (
+                <Badge count={itemCount} style={styles.cartBadge} />
+              )}
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+
+        {/* Search is always visible */}
         <View style={styles.searchSection}>
           <SearchBar
             onPress={() => navigation.navigate('Search')}
             editable={false}
           />
         </View>
+      </View>
 
-        {/* Promo Banner */}
-        <PromoBanner />
+      {/* Main Scrollable Content */}
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+            colors={[COLORS.primary]}
+            progressViewOffset={130}
+          />
+        }
+        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 160 }]}
+      >
+        {/* Greeting */}
+        <View style={styles.greetingSection}>
+          <Text style={styles.greeting}>Olá, {firstName}</Text>
+          <Text style={styles.brandGreeting}>
+            KINA JÁ! <Text style={styles.greetingEmoji}>🍔</Text>
+          </Text>
+        </View>
 
-        {/* Categories */}
-        <CategoryList
-          categories={categories}
-          selectedId={selectedCategory}
-          onSelect={setSelectedCategory}
-          onViewAll={() => {}}
-        />
-
-        {/* Popular Items */}
-        <PopularItems
-          products={popularProducts}
-          onItemPress={(product) =>
-            navigation.navigate('ProductDetail', { product })
-          }
-          onAddToCart={handleAddToCart}
-          onViewAll={() => {}}
-        />
+        {/* Conditional Rendering for Empty State */}
+        {restaurants.length === 0 ? (
+          <View style={styles.emptyStateFull}>
+            <Feather name="coffee" size={48} color={COLORS.textLight} />
+            <Text style={styles.emptyTitleText}>Nenhum restaurante na área</Text>
+            <Text style={styles.emptyDescText}>
+              {loading
+                ? 'Procurando restaurantes disponíveis...'
+                : 'Poxa, ainda não temos parceiros abertos para a sua localização.'}
+            </Text>
+          </View>
+        ) : (
+          <>
+            <PromoBanner />
+            <CategoryList
+              categories={categories}
+              selectedId={selectedCategory}
+              onSelect={setSelectedCategory}
+              onViewAll={() => {}}
+            />
+            <PopularItems
+              products={popularProducts}
+              onItemPress={(product) =>
+                navigation.navigate('ProductDetail', { product })
+              }
+              onAddToCart={handleAddToCart}
+              onViewAll={() => {}}
+            />
+          </>
+        )}
 
         {/* Open Restaurants */}
-        <View style={styles.restaurantsSection}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Restaurantes Abertos</Text>
-            <TouchableOpacity style={styles.viewAll} activeOpacity={0.7}>
-              <Text style={styles.viewAllText}>Ver Todos</Text>
-              <Feather name="chevron-right" size={14} color={COLORS.textSecondary} />
-            </TouchableOpacity>
-          </View>
+        {restaurants.length > 0 && (
+          <View style={styles.restaurantsSection}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Restaurantes Abertos</Text>
+              <TouchableOpacity style={styles.viewAll} activeOpacity={0.7}>
+                <Text style={styles.viewAllText}>Ver Todos</Text>
+                <Feather name="chevron-right" size={14} color={COLORS.textSecondary} />
+              </TouchableOpacity>
+            </View>
 
-          {restaurants.length > 0 ? (
-            restaurants.map((restaurant) => (
+            {restaurants.map((restaurant) => (
               <RestaurantCard
                 key={restaurant.id}
                 restaurant={restaurant}
@@ -183,19 +221,10 @@ export default function HomeScreen({ navigation }) {
                   navigation.navigate('RestaurantDetail', { restaurant })
                 }
               />
-            ))
-          ) : (
-            <View style={styles.emptyState}>
-              <Feather name="coffee" size={40} color={COLORS.textLight} />
-              <Text style={styles.emptyText}>
-                {loading
-                  ? 'Carregando restaurantes...'
-                  : 'Nenhum restaurante disponível'}
-              </Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
+            ))}
+          </View>
+        )}
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -205,13 +234,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  header: {
+  fixedHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: COLORS.background,
+    zIndex: 10,
+    paddingBottom: 8,
+  },
+  headerTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 24,
-    paddingTop: 8,
-    paddingBottom: 12,
+    height: 50,
   },
   menuButton: {
     padding: 8,
@@ -306,15 +343,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.textSecondary,
   },
-  emptyState: {
+  emptyStateFull: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 40,
-    gap: 12,
+    paddingVertical: 80,
+    paddingHorizontal: 32,
+    gap: 16,
   },
-  emptyText: {
+  emptyTitleText: {
+    fontFamily: FONTS.bold,
+    fontSize: 18,
+    color: COLORS.dark,
+    marginTop: 8,
+  },
+  emptyDescText: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     color: COLORS.textMuted,
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });

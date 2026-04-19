@@ -44,8 +44,8 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const login = async (phone, password) => {
-    const response = await authService.login(phone, password);
+  const login = async (identifier, password) => {
+    const response = await authService.login(identifier, password);
     const { user: userData, token: authToken } = response;
 
     await AsyncStorage.setItem('@kinaja_token', authToken);

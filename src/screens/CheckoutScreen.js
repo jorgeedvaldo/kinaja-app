@@ -6,11 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
-import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { useCustomAlert } from '../context/AlertContext';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import Button from '../components/common/Button';
@@ -19,6 +21,7 @@ import orderService from '../services/orderService';
 export default function CheckoutScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { showAlert } = useCustomAlert();
   const {
     items,
     restaurantId,
@@ -73,7 +76,7 @@ export default function CheckoutScreen({ navigation }) {
         return;
       }
 
-      Alert.alert(
+      showAlert(
         '🎉 Pedido Confirmado!',
         `O seu pedido #${order.id || ''} foi enviado com sucesso.`,
         [
@@ -96,10 +99,9 @@ export default function CheckoutScreen({ navigation }) {
       console.error('[DEBUG-CHECKOUT] API Error:', error.response?.data || error.message);
       const message =
         error.response?.data?.message || 'Erro ao enviar pedido. Tente novamente.';
-      Alert.alert('Erro', message);
+      showAlert('Erro', message, [{ text: 'OK' }]);
       setLoading(false); // Only reset loading on ERROR
     }
-    // Removed finally to keep loading true on success until screen unmounts
   };
 
   return (
