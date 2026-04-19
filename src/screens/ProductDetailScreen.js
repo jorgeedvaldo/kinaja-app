@@ -123,7 +123,7 @@ export default function ProductDetailScreen({ route, navigation }) {
       </ScrollView>
 
       {/* Bottom Bar - Add to Cart */}
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 90 }]}>
         <View style={styles.totalContainer}>
           <Text style={styles.totalLabel}>Total</Text>
           <Text style={styles.totalPrice}>

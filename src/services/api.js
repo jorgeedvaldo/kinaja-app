@@ -18,6 +18,7 @@ const api = axios.create({
 // Request interceptor — attach auth token
 api.interceptors.request.use(
   async (config) => {
+    console.log(`[API-REQUEST] ${config.method?.toUpperCase()} ${config.url}`, config.data || '');
     try {
       const token = await AsyncStorage.getItem('@kinaja_token');
       if (token) {
@@ -33,8 +34,12 @@ api.interceptors.request.use(
 
 // Response interceptor — handle 401 (token expired/invalid)
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(`[API-RESPONSE] ${response.status} ${response.config.url}`, response.data);
+    return response;
+  },
   async (error) => {
+    console.error(`[API-ERROR] ${error.response?.status || 'NETWORK'} ${error.config?.url}`, error.response?.data || error.message);
     if (error.response?.status === 401) {
       // Token is invalid/expired — clear stored auth
       await AsyncStorage.multiRemove(['@kinaja_token', '@kinaja_user']);

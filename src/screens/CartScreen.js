@@ -83,7 +83,7 @@ export default function CartScreen({ navigation }) {
       />
 
       {/* Summary & Checkout */}
-      <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 16 }]}>
+      <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 90 }]}>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Subtotal</Text>
           <Text style={styles.summaryValue}>

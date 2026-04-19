@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     right: -4,
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 100,
   },
   greetingSection: {
     paddingHorizontal: 24,

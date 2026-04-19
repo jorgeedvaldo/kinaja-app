@@ -28,12 +28,21 @@ export default function CheckoutScreen({ navigation }) {
   } = useCart();
   const [loading, setLoading] = useState(false);
 
+  console.log('[DEBUG-CHECKOUT]', { items, restaurantId, restaurantName });
+
   const subtotal = getSubtotal();
   const deliveryFee = 500;
   const total = subtotal + deliveryFee;
 
   const handlePlaceOrder = async () => {
+    if (loading) return; // Prevent multiple clicks
+    
     setLoading(true);
+    console.log('[DEBUG-CHECKOUT] Starting handlePlaceOrder...', { 
+      restaurantId, 
+      itemCount: items.length 
+    });
+
     try {
       const orderData = {
         restaurant_id: restaurantId,
@@ -45,8 +54,24 @@ export default function CheckoutScreen({ navigation }) {
         })),
       };
 
+      console.log('[DEBUG-CHECKOUT] Sending to API:', orderData);
       const order = await orderService.create(orderData);
+      console.log('[DEBUG-CHECKOUT] Success response:', order);
+
       clearCart();
+
+      // For WEB/Test environment, navigate immediately to avoid Alert issues
+      if (Platform.OS === 'web') {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'CartMain' }],
+        });
+        navigation.navigate('OrdersTab', {
+          screen: 'OrderDetail',
+          params: { order },
+        });
+        return;
+      }
 
       Alert.alert(
         '🎉 Pedido Confirmado!',
@@ -68,12 +93,13 @@ export default function CheckoutScreen({ navigation }) {
         ]
       );
     } catch (error) {
+      console.error('[DEBUG-CHECKOUT] API Error:', error.response?.data || error.message);
       const message =
         error.response?.data?.message || 'Erro ao enviar pedido. Tente novamente.';
       Alert.alert('Erro', message);
-    } finally {
-      setLoading(false);
+      setLoading(false); // Only reset loading on ERROR
     }
+    // Removed finally to keep loading true on success until screen unmounts
   };
 
   return (
@@ -154,7 +180,7 @@ export default function CheckoutScreen({ navigation }) {
       </ScrollView>
 
       {/* Bottom - Total & Confirm */}
-      <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 16 }]}>
+      <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 90 }]}>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Subtotal</Text>
           <Text style={styles.summaryValue}>Kz {subtotal.toLocaleString('pt-AO')}</Text>

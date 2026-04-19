@@ -39,6 +39,39 @@ export default function OrderDetailScreen({ route, navigation }) {
   };
 
   const handleCancel = () => {
+    console.log('[DEBUG-CANCEL] handleCancel triggered.');
+    
+    const onConfirm = async () => {
+      console.log('[DEBUG-CANCEL] Starting handleCancel for order:', order.id);
+      setCancelling(true);
+      try {
+        const result = await orderService.cancel(order.id);
+        console.log('[DEBUG-CANCEL] Success response:', result);
+        
+        // Update local state immediately
+        setOrder((prev) => ({ ...prev, status: 'cancelled' }));
+        
+        if (Platform.OS !== 'web') {
+          Alert.alert('Pedido Cancelado', 'O seu pedido foi cancelado com sucesso.');
+        } else {
+          alert('Pedido Cancelado com sucesso!');
+        }
+      } catch (error) {
+        console.error('[DEBUG-CANCEL] API Error:', error.response?.data || error.message);
+        const msg = error.response?.data?.message || 'Erro ao cancelar pedido.';
+        Alert.alert('Erro', msg);
+      } finally {
+        setCancelling(false);
+      }
+    };
+
+    if (Platform.OS === 'web') {
+      if (window.confirm('Tem certeza que deseja cancelar este pedido?')) {
+        onConfirm();
+      }
+      return;
+    }
+
     Alert.alert(
       'Cancelar Pedido',
       'Tem certeza que deseja cancelar este pedido?',
@@ -47,19 +80,7 @@ export default function OrderDetailScreen({ route, navigation }) {
         {
           text: 'Sim, Cancelar',
           style: 'destructive',
-          onPress: async () => {
-            setCancelling(true);
-            try {
-              await orderService.cancel(order.id);
-              setOrder((prev) => ({ ...prev, status: 'cancelled' }));
-              Alert.alert('Pedido Cancelado', 'O seu pedido foi cancelado com sucesso.');
-            } catch (error) {
-              const msg = error.response?.data?.message || 'Erro ao cancelar pedido.';
-              Alert.alert('Erro', msg);
-            } finally {
-              setCancelling(false);
-            }
-          },
+          onPress: onConfirm,
         },
       ]
     );
@@ -204,7 +225,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 24,
-    paddingBottom: 40,
+    paddingBottom: 120,
   },
   section: {
     marginBottom: 24,

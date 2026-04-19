@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   },
   menuContent: {
     padding: 16,
-    paddingBottom: 40,
+    paddingBottom: 110,
   },
   loader: {
     marginTop: 40,

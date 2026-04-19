@@ -97,6 +97,7 @@ export function CartProvider({ children }) {
   }, [removeItem]);
 
   const clearCart = useCallback(() => {
+    console.log('[DEBUG-CART] Clearing cart items and restaurant state.');
     setItems([]);
     setRestaurantId(null);
     setRestaurantName('');

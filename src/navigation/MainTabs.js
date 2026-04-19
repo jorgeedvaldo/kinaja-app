@@ -101,9 +101,8 @@ const tabBadgeStyles = StyleSheet.create({
 });
 
 // Main Tab Navigator
-export default function MainTabs() {
-  return (
     <Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: COLORS.background }}
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false,
@@ -120,7 +119,7 @@ export default function MainTabs() {
           shadowOpacity: 0.05,
           shadowRadius: 16,
           elevation: 10,
-          position: 'absolute',
+          // position: 'absolute', // Removed to fix ghosting
         },
         tabBarIcon: ({ focused }) => {
           let iconName;
