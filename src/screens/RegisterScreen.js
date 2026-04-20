@@ -12,12 +12,14 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import Button from '../components/common/Button';
 
 export default function RegisterScreen({ navigation }) {
   const { register } = useAuth();
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -119,47 +121,47 @@ export default function RegisterScreen({ navigation }) {
           <Feather name="arrow-left" size={24} color={COLORS.textPrimary} />
         </TouchableOpacity>
 
-        <Text style={styles.title}>Criar Conta</Text>
+        <Text style={styles.title}>{t('auth.register_welcome')}</Text>
         <Text style={styles.subtitle}>
-          Preencha os dados abaixo para começar
+          {t('auth.register_subtitle')}
         </Text>
 
-        {renderInput('name', 'Nome Completo', 'user', {
+        {renderInput('name', t('auth.full_name'), 'user', {
           placeholder: 'João Silva',
           autoCapitalize: 'words',
         })}
 
-        {renderInput('phone', 'Telefone', 'phone', {
+        {renderInput('phone', t('auth.phone'), 'phone', {
           placeholder: '+244 9XX XXX XXX',
           keyboardType: 'phone-pad',
         })}
 
-        {renderInput('email', 'Email (opcional)', 'mail', {
+        {renderInput('email', `${t('auth.email')} (opcional)`, 'mail', {
           placeholder: 'joao@email.com',
           keyboardType: 'email-address',
         })}
 
-        {renderInput('password', 'Password', 'lock', {
+        {renderInput('password', t('auth.password'), 'lock', {
           placeholder: 'Mínimo 8 caracteres',
           secure: true,
         })}
 
-        {renderInput('password_confirmation', 'Confirmar Password', 'lock', {
+        {renderInput('password_confirmation', t('auth.confirm_password'), 'lock', {
           placeholder: 'Repita a password',
           secure: true,
         })}
 
         <Button
-          title="Criar Conta"
+          title={t('auth.create_account')}
           onPress={handleRegister}
           loading={loading}
           style={styles.registerButton}
         />
 
         <View style={styles.loginRow}>
-          <Text style={styles.loginText}>Já tem conta? </Text>
+          <Text style={styles.loginText}>{t('auth.already_have_account')} </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={styles.loginLink}>Entrar</Text>
+            <Text style={styles.loginLink}>{t('auth.login')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

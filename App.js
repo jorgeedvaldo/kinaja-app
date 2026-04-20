@@ -17,7 +17,12 @@ import { AuthProvider } from './src/context/AuthContext';
 import { CartProvider } from './src/context/CartContext';
 import { AlertProvider } from './src/context/AlertContext';
 import { LocationProvider } from './src/context/LocationContext';
+import { LanguageProvider } from './src/context/LanguageContext';
+import { AddressProvider } from './src/context/AddressContext';
 import AppNavigator from './src/navigation/AppNavigator';
+
+// i18n initialization
+import './src/i18n';
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
@@ -44,18 +49,22 @@ export default function App() {
 
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
-      <AlertProvider>
-        <AuthProvider>
-          <LocationProvider>
-            <CartProvider>
-              <NavigationContainer>
-                <AppNavigator />
-                <StatusBar style="dark" />
-              </NavigationContainer>
-            </CartProvider>
-          </LocationProvider>
-        </AuthProvider>
-      </AlertProvider>
+      <LanguageProvider>
+        <AddressProvider>
+          <AlertProvider>
+            <AuthProvider>
+              <LocationProvider>
+                <CartProvider>
+                  <NavigationContainer>
+                    <AppNavigator />
+                    <StatusBar style="dark" />
+                  </NavigationContainer>
+                </CartProvider>
+              </LocationProvider>
+            </AuthProvider>
+          </AlertProvider>
+        </AddressProvider>
+      </LanguageProvider>
     </SafeAreaProvider>
   );
 }

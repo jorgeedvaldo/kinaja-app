@@ -1,0 +1,228 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "done": "Concluído",
+    "search": "Procurar",
+    "error": "Erro",
+    "success": "Sucesso",
+    "delete": "Remover",
+    "confirm": "Confirmar",
+    "close": "Fechar",
+    "free": "Grátis",
+    "item": "item",
+    "items": "itens"
+  },
+  "tabs": {
+    "home": "Início",
+    "orders": "Pedidos",
+    "cart": "Carrinho",
+    "profile": "Perfil"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Registar",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "password": "Senha",
+    "forgot_password": "Esqueceu a senha?",
+    "dont_have_account": "Não tem uma conta?",
+    "already_have_account": "Já tem uma conta?",
+    "login_welcome": "Olá, Bem-vindo de volta!",
+    "login_subtitle": "Faça login para continuar a fazer pedidos",
+    "register_welcome": "Criar Conta",
+    "register_subtitle": "Preencha os dados abaixo para começar",
+    "full_name": "Nome Completo",
+    "confirm_password": "Confirmar Senha",
+    "email_or_phone": "E-mail ou Telefone",
+    "create_account": "Criar Conta"
+  },
+  "home": {
+    "deliver_to": "Entregar em",
+    "search_placeholder": "O que quer comer hoje?",
+    "categories": "Categorias",
+    "all_categories": "Todas as Categorias",
+    "popular_items": "Mais Pedidos",
+    "open_restaurants": "Restaurantes Abertos",
+    "all_restaurants": "Todos os Restaurantes",
+    "see_all": "Ver Todas",
+    "offer_special": "Oferta Especial",
+    "off": "OFF",
+    "first_order": "No seu primeiro pedido",
+    "no_restaurants_title": "Nenhum restaurante na área",
+    "no_restaurants_desc": "Poxa, ainda não temos parceiros abertos para a sua localização.",
+    "all": "Todos"
+  },
+  "cart": {
+    "title": "Carrinho",
+    "empty_title": "Carrinho Vazio",
+    "empty_desc": "Adicione itens deliciosos do seu restaurante favorito",
+    "explore": "Explorar Restaurantes",
+    "clear": "Limpar",
+    "subtotal": "Subtotal",
+    "delivery_fee": "Taxa de entrega",
+    "total": "Total",
+    "checkout": "Finalizar Pedido"
+  },
+  "checkout": {
+    "title": "Finalizar Pedido",
+    "delivery_address": "Endereço de Entrega",
+    "change": "Alterar",
+    "payment_method": "Método de Pagamento",
+    "cash": "Dinheiro",
+    "tpa": "Multicaixa (TPA)",
+    "express": "Multicaixa Express",
+    "order_summary": "Resumo do Pedido",
+    "place_order": "Confirmar Pedido",
+    "success_title": "Pedido Realizado!",
+    "success_desc": "O seu pedido foi enviado para o restaurante. Pode acompanhar o estado na aba de pedidos.",
+    "back_to_home": "Voltar ao Início"
+  },
+  "restaurant": {
+    "delivery_time": "min",
+    "info": "Informação",
+    "menu": "Menu",
+    "reviews": "Avaliações",
+    "add": "Adicionar"
+  },
+  "product": {
+    "add_to_cart": "Adicionar ao Carrinho",
+    "quantity": "Quantidade"
+  },
+  "orders": {
+    "title": "Meus Pedidos",
+    "empty_title": "Nenhum Pedido",
+    "empty_desc": "Os seus pedidos aparecerão aqui após fazer o primeiro",
+    "order": "pedido",
+    "orders_plural": "pedidos"
+  },
+  "profile": {
+    "title": "Perfil",
+    "edit_profile": "Editar Perfil",
+    "addresses": "Endereços",
+    "notifications": "Notificações",
+    "help_support": "Ajuda & Suporte",
+    "about": "Sobre o App",
+    "logout": "Terminar Sessão",
+    "logout_confirm": "Tem certeza que deseja sair?",
+    "language": "Idioma",
+    "portuguese": "Português",
+    "english": "Inglês",
+    "save_changes": "Guardar Alterações",
+    "phone_locked": "O telefone não pode ser alterado",
+    "profile_updated": "Perfil atualizado com sucesso!",
+    "profile_update_error": "Não foi possível atualizar o perfil."
+  },
+  "addresses": {
+    "title": "Endereços Guardados",
+    "empty_title": "Nenhum endereço guardado",
+    "empty_desc": "Adicione moradas para facilitar as suas encomendas.",
+    "add_new": "Adicionar Novo",
+    "remove_title": "Remover Endereço",
+    "remove_confirm": "Deseja realmente remover \"{{name}}\"?",
+    "save_address": "Guardar Endereço",
+    "confirm_location": "Confirmar Localização",
+    "nickname_title": "Dar um nome",
+    "nickname_hint": "Ex: Casa, Trabalho, Mãe...",
+    "nickname_placeholder": "Nome do local"
+  },
+  "faq": {
+    "title": "Ajuda & Suporte",
+    "faq_title": "Perguntas Frequentes",
+    "terms_title": "Termos e Condições",
+    "privacy_title": "Política de Privacidade",
+    "terms_content": [
+      {
+        "subtitle": "1. Aceitação dos Termos",
+        "text": "Ao descarregar, instalar ou utilizar a aplicação KinaJá (\"App\"), o utilizador aceita cumprir e ficar vinculado aos presentes Termos e Condições. Se não concordar com algum destes termos, não deverá utilizar a App."
+      },
+      {
+        "subtitle": "2. Descrição do Serviço",
+        "text": "O KinaJá é uma plataforma tecnológica de intermediação que conecta clientes a restaurantes parceiros na cidade de Luanda, República de Angola. A plataforma permite encomendar refeições e acompanhar entregas em tempo real."
+      },
+      {
+        "subtitle": "3. Registo e Conta",
+        "text": "Para utilizar o serviço, o utilizador deve criar uma conta fornecendo informações verdadeiras e atualizadas, incluindo nome, número de telefone e, opcionalmente, endereço de e-mail. O utilizador é responsável por manter a confidencialidade das suas credenciais de acesso."
+      },
+      {
+        "subtitle": "4. Pedidos e Pagamentos",
+        "text": "Todos os preços são apresentados em Kwanzas angolanos (Kz) e incluem o valor dos produtos e a taxa de entrega. Os métodos de pagamento aceites incluem: dinheiro (Cash), Terminal de Pagamento Automático (TPA) e Multicaixa Express. O pagamento é efectuado no acto da entrega."
+      },
+      {
+        "subtitle": "5. Entregas",
+        "text": "O tempo estimado de entrega varia conforme a distância entre o restaurante e o local de entrega, bem como as condições de trânsito. O KinaJá envidará todos os esforços para cumprir os prazos estimados, embora não possa garantir tempos exactos."
+      },
+      {
+        "subtitle": "6. Cancelamentos",
+        "text": "O utilizador pode cancelar um pedido desde que o restaurante ainda não tenha iniciado a preparação. Após a confirmação do restaurante, o cancelamento poderá estar sujeito a uma taxa."
+      },
+      {
+        "subtitle": "7. Responsabilidade",
+        "text": "O KinaJá actua exclusivamente como intermediário. A qualidade, segurança alimentar e conformidade dos produtos são da inteira responsabilidade dos restaurantes parceiros. Qualquer reclamação relacionada com a qualidade da comida deve ser dirigida ao restaurante através da App."
+      },
+      {
+        "subtitle": "8. Alterações aos Termos",
+        "text": "Reservamo-nos o direito de modificar estes termos a qualquer momento. As alterações entram em vigor imediatamente após a sua publicação na App. A continuação do uso da App após as alterações constitui aceitação dos novos termos."
+      }
+    ],
+    "privacy_content": [
+      {
+        "subtitle": "1. Dados Recolhidos",
+        "text": "Recolhemos as seguintes informações pessoais: nome completo, número de telefone, endereço de e-mail (opcional), localização GPS (durante a utilização da App) e histórico de pedidos. Estes dados são essenciais para a prestação do nosso serviço."
+      },
+      {
+        "subtitle": "2. Finalidade do Tratamento",
+        "text": "Os seus dados são utilizados exclusivamente para: processar e entregar encomendas, melhorar a experiência do utilizador, enviar comunicações sobre o estado dos pedidos e garantir a segurança da plataforma."
+      },
+      {
+        "subtitle": "3. Localização GPS",
+        "text": "A sua localização é utilizada apenas enquanto a App está aberta, para identificar restaurantes próximos e orientar o estafeta até ao local de entrega. Não monitorizamos a sua localização em segundo plano."
+      },
+      {
+        "subtitle": "4. Partilha de Dados",
+        "text": "Os seus dados pessoais não são vendidos nem partilhados com terceiros para fins de marketing. Poderemos partilhar informações limitadas (nome e morada de entrega) com o restaurante e o estafeta atribuídos ao seu pedido."
+      },
+      {
+        "subtitle": "5. Armazenamento e Segurança",
+        "text": "Os dados são armazenados em servidores seguros com encriptação. Implementamos medidas técnicas e organizativas adequadas para proteger os seus dados contra acesso não autorizado, perda ou destruição."
+      },
+      {
+        "subtitle": "6. Direitos do Utilizador",
+        "text": "Tem o direito de aceder, corrigir ou eliminar os seus dados pessoais a qualquer momento, contactando-nos através da App ou do e-mail suporte@kinaja.ao."
+      }
+    ],
+    "faq_content": [
+      {
+        "subtitle": "Quanto tempo demora a entrega?",
+        "text": "Em média, as entregas são realizadas entre 30 a 50 minutos, dependendo da distância entre o restaurante e o local de entrega, bem como das condições de trânsito em Luanda. Nos períodos de maior procura (12h-14h e 19h-21h), os tempos podem ser ligeiramente superiores."
+      },
+      {
+        "subtitle": "Quais são os métodos de pagamento aceites?",
+        "text": "Aceitamos três formas de pagamento: Dinheiro (Cash) — pague diretamente ao estafeta; TPA (Cartão Multicaixa) — o estafeta leva um terminal portátil; e Multicaixa Express — transferência instantânea no ato da entrega."
+      },
+      {
+        "subtitle": "Como cancelar um pedido?",
+        "text": "Pode cancelar o seu pedido na tela de detalhes do pedido, desde que o restaurante ainda não tenha começado a preparar a refeição. Após a preparação ter iniciado, contacte o suporte para assistência."
+      },
+      {
+        "subtitle": "Posso fazer pedidos para outra morada?",
+        "text": "Sim! Pode guardar múltiplas moradas no seu perfil (ex: Casa, Trabalho, Outro) e selecionar o endereço de entrega pretendido antes de confirmar cada pedido."
+      },
+      {
+        "subtitle": "Como posso contactar o suporte?",
+        "text": "Pode contactar-nos através do e-mail suporte@kinaja.ao ou pelo WhatsApp +244 923 000 000. O nosso horário de atendimento é de segunda a domingo, das 8h às 22h."
+      },
+      {
+        "subtitle": "Existe um valor mínimo de pedido?",
+        "text": "Atualmente não exigimos um valor mínimo de pedido. No entanto, cada restaurante pode definir o seu próprio mínimo, que será indicado na página do restaurante."
+      },
+      {
+        "subtitle": "Como rastreio o meu pedido?",
+        "text": "Após confirmar o pedido, pode acompanhar o progresso em tempo real na secção 'Meus Pedidos'. Receberá atualizações sobre cada etapa: confirmação, preparação, a caminho e entregue."
+      }
+    ]
+  }
+}

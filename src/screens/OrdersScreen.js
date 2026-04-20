@@ -12,6 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
+import { useTranslation } from 'react-i18next';
 import OrderCard from '../components/order/OrderCard';
 import orderService from '../services/orderService';
 
@@ -20,6 +21,7 @@ export default function OrdersScreen({ navigation }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const { t } = useTranslation();
 
   const loadOrders = useCallback(async () => {
     try {
@@ -56,9 +58,9 @@ export default function OrdersScreen({ navigation }) {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Meus Pedidos</Text>
+        <Text style={styles.headerTitle}>{t('orders.title')}</Text>
         <Text style={styles.orderCount}>
-          {orders.length} {orders.length === 1 ? 'pedido' : 'pedidos'}
+          {orders.length} {orders.length === 1 ? t('orders.order') : t('orders.orders_plural')}
         </Text>
       </View>
 
@@ -67,9 +69,9 @@ export default function OrdersScreen({ navigation }) {
           <View style={styles.emptyIconCircle}>
             <Feather name="package" size={48} color={COLORS.textLight} />
           </View>
-          <Text style={styles.emptyTitle}>Nenhum Pedido</Text>
+          <Text style={styles.emptyTitle}>{t('orders.empty_title')}</Text>
           <Text style={styles.emptyText}>
-            Os seus pedidos aparecerão aqui após fazer o primeiro
+            {t('orders.empty_desc')}
           </Text>
         </View>
       ) : (

@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import { useCart } from '../context/CartContext';
+import { useTranslation } from 'react-i18next';
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
@@ -59,11 +60,19 @@ function OrdersStackNav() {
   );
 }
 
+import FAQScreen from '../screens/FAQScreen';
+import FAQDetailScreen from '../screens/FAQDetailScreen';
+import SavedAddressesScreen from '../screens/SavedAddressesScreen';
+
 function ProfileStackNav() {
   return (
     <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
       <ProfileStack.Screen name="ProfileMain" component={ProfileScreen} />
       <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
+      <ProfileStack.Screen name="FAQ" component={FAQScreen} />
+      <ProfileStack.Screen name="FAQDetail" component={FAQDetailScreen} />
+      <ProfileStack.Screen name="SavedAddresses" component={SavedAddressesScreen} />
+      <ProfileStack.Screen name="LocationSelect" component={LocationSelectScreen} />
     </ProfileStack.Navigator>
   );
 }
@@ -107,12 +116,13 @@ const tabBadgeStyles = StyleSheet.create({
 function CustomTabBar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
   const { itemCount } = useCart();
+  const { t } = useTranslation();
 
   const tabs = [
-    { name: 'HomeTab', icon: 'home', label: 'Início' },
-    { name: 'OrdersTab', icon: 'package', label: 'Pedidos' },
-    { name: 'CartTab', icon: 'shopping-cart', label: 'Carrinho' },
-    { name: 'ProfileTab', icon: 'user', label: 'Perfil' },
+    { name: 'HomeTab', icon: 'home', label: t('tabs.home') },
+    { name: 'OrdersTab', icon: 'package', label: t('tabs.orders') },
+    { name: 'CartTab', icon: 'shopping-cart', label: t('tabs.cart') },
+    { name: 'ProfileTab', icon: 'user', label: t('tabs.profile') },
   ];
 
   return (

@@ -11,6 +11,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useCustomAlert } from '../context/AlertContext';
+import { useLanguage } from '../context/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 
@@ -18,15 +20,17 @@ export default function ProfileScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { user, logout } = useAuth();
   const { showAlert } = useCustomAlert();
+  const { t } = useTranslation();
+  const { currentLanguage, changeLanguage } = useLanguage();
 
   const handleLogout = () => {
     showAlert(
-      'Terminar Sessão',
-      'Tem certeza que deseja sair?',
+      t('profile.logout'),
+      t('profile.logout_confirm'),
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Sair',
+          text: t('profile.logout'),
           style: 'destructive',
           onPress: async () => {
             await logout();
@@ -34,6 +38,11 @@ export default function ProfileScreen({ navigation }) {
         },
       ]
     );
+  };
+
+  const toggleLanguage = () => {
+    const nextLang = currentLanguage === 'pt' ? 'en' : 'pt';
+    changeLanguage(nextLang);
   };
 
   const initials = user?.name
@@ -48,29 +57,34 @@ export default function ProfileScreen({ navigation }) {
   const menuItems = [
     {
       icon: 'edit-3',
-      label: 'Editar Perfil',
+      label: t('profile.edit_profile'),
       onPress: () => navigation.navigate('EditProfile'),
     },
     {
       icon: 'map-pin',
-      label: 'Endereços',
-      onPress: () => {},
-      badge: 'Em breve',
+      label: t('profile.addresses'),
+      onPress: () => navigation.navigate('SavedAddresses'),
+    },
+    {
+      icon: 'globe',
+      label: t('profile.language'),
+      onPress: toggleLanguage,
+      value: currentLanguage === 'pt' ? t('profile.portuguese') : t('profile.english'),
     },
     {
       icon: 'bell',
-      label: 'Notificações',
+      label: t('profile.notifications'),
       onPress: () => {},
-      badge: 'Em breve',
+      badge: 'BETA',
     },
     {
       icon: 'help-circle',
-      label: 'Ajuda & Suporte',
-      onPress: () => {},
+      label: t('profile.help_support'),
+      onPress: () => navigation.navigate('FAQ'),
     },
     {
       icon: 'info',
-      label: 'Sobre o App',
+      label: t('profile.about'),
       onPress: () => showAlert('KinaJá', 'Versão 1.0.0\nEntrega rápida em Luanda', [{ text: 'OK' }]),
     },
   ];
@@ -82,7 +96,7 @@ export default function ProfileScreen({ navigation }) {
         contentContainerStyle={styles.scrollContent}
       >
         {/* Header */}
-        <Text style={styles.headerTitle}>Perfil</Text>
+        <Text style={styles.headerTitle}>{t('profile.title')}</Text>
 
         {/* User Card */}
         <View style={styles.userCard}>
@@ -111,6 +125,11 @@ export default function ProfileScreen({ navigation }) {
                 <Feather name={item.icon} size={18} color={COLORS.primary} />
               </View>
               <Text style={styles.menuLabel}>{item.label}</Text>
+              
+              {item.value && (
+                <Text style={styles.menuValue}>{item.value}</Text>
+              )}
+
               {item.badge ? (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{item.badge}</Text>
@@ -129,7 +148,7 @@ export default function ProfileScreen({ navigation }) {
           activeOpacity={0.7}
         >
           <Feather name="log-out" size={18} color={COLORS.error} />
-          <Text style={styles.logoutText}>Terminar Sessão</Text>
+          <Text style={styles.logoutText}>{t('profile.logout')}</Text>
         </TouchableOpacity>
 
         {/* App version */}
@@ -239,6 +258,12 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     fontSize: 15,
     color: COLORS.textPrimary,
+  },
+  menuValue: {
+    fontFamily: FONTS.medium,
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    marginRight: 8,
   },
   badge: {
     backgroundColor: COLORS.backgroundGray,

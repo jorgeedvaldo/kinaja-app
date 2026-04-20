@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, TextInput, Keyboard, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, TextInput, Keyboard, Platform, Modal } from 'react-native';
 import MapView from '../components/Map/MapView';
 import * as Location from 'expo-location';
 import { Feather } from '@expo/vector-icons';
@@ -9,17 +9,24 @@ import { FONTS } from '../constants/typography';
 import Button from '../components/common/Button';
 import { useLocation } from '../context/LocationContext';
 import { useCustomAlert } from '../context/AlertContext';
+import { useAddresses } from '../context/AddressContext';
+import { useTranslation } from 'react-i18next';
 
-export default function LocationSelectScreen({ navigation }) {
+export default function LocationSelectScreen({ navigation, route }) {
   const insets = useSafeAreaInsets();
   const { currentLocation, saveLocation } = useLocation();
+  const { saveAddress } = useAddresses();
   const { showAlert } = useCustomAlert();
+  const { t } = useTranslation();
   const mapRef = useRef(null);
 
   const [region, setRegion] = useState(null);
   const [address, setAddress] = useState('Buscando localização...');
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const [isSaveModalVisible, setIsSaveModalVisible] = useState(false);
+  const [addressNickname, setAddressNickname] = useState('');
 
   const defaultLocation = {
     latitude: -8.8390,
@@ -128,6 +135,14 @@ export default function LocationSelectScreen({ navigation }) {
 
   const handleConfirm = async () => {
     if (!region) return;
+
+    if (route.params?.mode === 'save') {
+      const defaultName = address.split(',')[1]?.trim() || address.split(',')[0] || '';
+      setAddressNickname(defaultName);
+      setIsSaveModalVisible(true);
+      return;
+    }
+
     let mainAddress = address.split(',')[0] || address;
     let subAddress = address.split(',')[1]?.trim() || 'Morada guardada';
 
@@ -139,6 +154,24 @@ export default function LocationSelectScreen({ navigation }) {
     };
     await saveLocation(locationData);
     navigation.goBack();
+  };
+
+  const handleSaveConfirmed = async () => {
+    if (!addressNickname.trim()) return;
+    
+    const success = await saveAddress({
+      name: addressNickname,
+      address: address,
+      latitude: region.latitude,
+      longitude: region.longitude,
+    });
+
+    if (success) {
+      setIsSaveModalVisible(false);
+      navigation.goBack();
+    } else {
+      showAlert('Erro', 'Não foi possível guardar o endereço.');
+    }
   };
 
   return (
@@ -213,12 +246,50 @@ export default function LocationSelectScreen({ navigation }) {
         </View>
 
         <Button
-          title="Confirmar Localização"
+          title={route.params?.mode === 'save' ? t('addresses.save_address') : t('addresses.confirm_location')}
           onPress={handleConfirm}
           disabled={!region}
           style={styles.confirmBtn}
         />
       </View>
+
+      {/* SAVE NICKNAME MODAL */}
+      <Modal
+        visible={isSaveModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setIsSaveModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{t('addresses.nickname_title')}</Text>
+            <Text style={styles.modalDesc}>{t('addresses.nickname_hint')}</Text>
+            
+            <TextInput
+              style={styles.nicknameInput}
+              value={addressNickname}
+              onChangeText={setAddressNickname}
+              autoFocus
+              placeholder={t('addresses.nickname_placeholder')}
+            />
+
+            <View style={styles.modalActions}>
+              <TouchableOpacity 
+                style={styles.cancelBtn} 
+                onPress={() => setIsSaveModalVisible(false)}
+              >
+                <Text style={styles.cancelText}>{t('common.cancel')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.saveBtn} 
+                onPress={handleSaveConfirmed}
+              >
+                <Text style={styles.saveText}>{t('common.save')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -347,5 +418,64 @@ const styles = StyleSheet.create({
   },
   confirmBtn: {
     width: '100%',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    padding: 30,
+  },
+  modalContent: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 24,
+    padding: 24,
+  },
+  modalTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 20,
+    color: COLORS.dark,
+    marginBottom: 4,
+  },
+  modalDesc: {
+    fontFamily: FONTS.regular,
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    marginBottom: 20,
+  },
+  nicknameInput: {
+    backgroundColor: COLORS.backgroundGray,
+    borderRadius: 12,
+    padding: 16,
+    fontFamily: FONTS.semiBold,
+    fontSize: 16,
+    color: COLORS.dark,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    marginBottom: 24,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+  },
+  cancelBtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  cancelText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 15,
+    color: COLORS.textMuted,
+  },
+  saveBtn: {
+    backgroundColor: COLORS.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+  },
+  saveText: {
+    fontFamily: FONTS.bold,
+    fontSize: 15,
+    color: COLORS.accent,
   },
 });

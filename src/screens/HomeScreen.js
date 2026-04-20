@@ -19,6 +19,7 @@ import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useLocation } from '../context/LocationContext';
+import { useTranslation } from 'react-i18next';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import SearchBar from '../components/common/SearchBar';
@@ -35,6 +36,7 @@ export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
   const { itemCount, addItem } = useCart();
   const { currentLocation, loadingLocation } = useLocation();
+  const { t } = useTranslation();
 
   const [restaurants, setRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -120,7 +122,7 @@ export default function HomeScreen({ navigation }) {
     extrapolate: 'clamp',
   });
 
-  let displayAddress = 'A buscar satélite...';
+  let displayAddress = t('common.loading');
   if (!loadingLocation && currentLocation) {
     displayAddress = currentLocation.address || `${currentLocation.latitude.toFixed(4)}, ${currentLocation.longitude.toFixed(4)}`;
   }
@@ -145,7 +147,7 @@ export default function HomeScreen({ navigation }) {
             <View style={{ width: 38 }} />
 
             <View style={styles.locationContainer}>
-              <Text style={styles.locationLabel}>Entregar em</Text>
+              <Text style={styles.locationLabel}>{t('home.deliver_to')}</Text>
               <TouchableOpacity 
                 style={styles.locationRow} 
                 activeOpacity={0.7}
@@ -174,6 +176,7 @@ export default function HomeScreen({ navigation }) {
           <SearchBar
             onPress={() => navigation.navigate('Search')}
             editable={false}
+            placeholder={t('home.search_placeholder')}
           />
         </View>
       </View>
@@ -204,7 +207,7 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.emptyTitleText}>Nenhum restaurante na área</Text>
             <Text style={styles.emptyDescText}>
               {loading
-                ? 'Procurando restaurantes disponíveis...'
+                ? t('common.loading')
                 : 'Poxa, ainda não temos parceiros abertos para a sua localização.'}
             </Text>
           </View>
@@ -241,13 +244,13 @@ export default function HomeScreen({ navigation }) {
         {restaurants.length > 0 && (
           <View style={styles.restaurantsSection}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Restaurantes Abertos</Text>
+              <Text style={styles.sectionTitle}>{t('home.open_restaurants')}</Text>
               <TouchableOpacity 
                 style={styles.viewAll} 
                 activeOpacity={0.7}
                 onPress={() => setIsRestaurantModalVisible(true)}
               >
-                <Text style={styles.viewAllText}>Ver Todos</Text>
+                <Text style={styles.viewAllText}>{t('home.see_all')}</Text>
                 <Feather name="chevron-right" size={14} color={COLORS.textSecondary} />
               </TouchableOpacity>
             </View>
@@ -274,7 +277,7 @@ export default function HomeScreen({ navigation }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Todas as Categorias</Text>
+            <Text style={styles.modalTitle}>{t('home.categories')}</Text>
             <TouchableOpacity onPress={() => setIsCategoryModalVisible(false)} style={styles.modalCloseBtn}>
               <Feather name="x" size={24} color={COLORS.dark} />
             </TouchableOpacity>
@@ -314,7 +317,7 @@ export default function HomeScreen({ navigation }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Todos os Restaurantes</Text>
+            <Text style={styles.modalTitle}>{t('home.open_restaurants')}</Text>
             <TouchableOpacity onPress={() => setIsRestaurantModalVisible(false)} style={styles.modalCloseBtn}>
               <Feather name="x" size={24} color={COLORS.dark} />
             </TouchableOpacity>

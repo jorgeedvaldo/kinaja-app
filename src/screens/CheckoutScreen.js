@@ -16,6 +16,7 @@ import { useLocation } from '../context/LocationContext';
 import { useCustomAlert } from '../context/AlertContext';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/common/Button';
 import orderService from '../services/orderService';
 
@@ -24,6 +25,7 @@ export default function CheckoutScreen({ navigation }) {
   const { user } = useAuth();
   const { showAlert } = useCustomAlert();
   const { currentLocation, loadingLocation } = useLocation();
+  const { t } = useTranslation();
   const {
     items,
     restaurantId,
@@ -76,11 +78,11 @@ export default function CheckoutScreen({ navigation }) {
       }
 
       showAlert(
-        '🎉 Pedido Confirmado!',
-        `O seu pedido #${order.id || ''} foi enviado com sucesso.`,
+        `🎉 ${t('checkout.success_title')}`,
+        t('checkout.success_desc'),
         [
           {
-            text: 'Acompanhar Pedido',
+            text: t('orders.title'),
             onPress: () => {
               navigation.reset({
                 index: 0,
@@ -113,7 +115,7 @@ export default function CheckoutScreen({ navigation }) {
         >
           <Feather name="arrow-left" size={20} color={COLORS.textPrimary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Confirmar Pedido</Text>
+        <Text style={styles.headerTitle}>{t('checkout.title')}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -125,10 +127,10 @@ export default function CheckoutScreen({ navigation }) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Feather name="map-pin" size={18} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Endereço de Entrega</Text>
+            <Text style={styles.sectionTitle}>{t('checkout.delivery_address')}</Text>
           </View>
           {loadingLocation ? (
-            <Text style={styles.addressText}>A ler localização...</Text>
+            <Text style={styles.addressText}>{t('common.loading')}</Text>
           ) : (
             <TouchableOpacity 
               style={styles.addressCard} 
@@ -158,7 +160,7 @@ export default function CheckoutScreen({ navigation }) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Feather name="shopping-bag" size={18} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Itens do Pedido</Text>
+            <Text style={styles.sectionTitle}>{t('checkout.order_summary')}</Text>
           </View>
           {items.map((item) => (
             <View key={item.product.id} style={styles.itemRow}>
@@ -179,14 +181,14 @@ export default function CheckoutScreen({ navigation }) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Feather name="credit-card" size={18} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Pagamento</Text>
+            <Text style={styles.sectionTitle}>{t('checkout.payment_method')}</Text>
           </View>
           <View style={styles.paymentCard}>
             <View style={styles.paymentOption}>
               <View style={styles.paymentRadio}>
                 <View style={styles.paymentRadioInner} />
               </View>
-              <Text style={styles.paymentText}>💵 Dinheiro na Entrega</Text>
+              <Text style={styles.paymentText}>💵 {t('checkout.cash')}</Text>
             </View>
           </View>
         </View>
@@ -195,21 +197,21 @@ export default function CheckoutScreen({ navigation }) {
       {/* Bottom - Total & Confirm */}
       <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 90 }]}>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Subtotal</Text>
+          <Text style={styles.summaryLabel}>{t('cart.subtotal')}</Text>
           <Text style={styles.summaryValue}>Kz {subtotal.toLocaleString('pt-AO')}</Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Taxa de entrega</Text>
+          <Text style={styles.summaryLabel}>{t('cart.delivery_fee')}</Text>
           <Text style={styles.summaryValue}>Kz {deliveryFee.toLocaleString('pt-AO')}</Text>
         </View>
         <View style={styles.divider} />
         <View style={styles.summaryRow}>
-          <Text style={styles.totalLabel}>Total</Text>
+          <Text style={styles.totalLabel}>{t('cart.total')}</Text>
           <Text style={styles.totalValue}>Kz {total.toLocaleString('pt-AO')}</Text>
         </View>
 
         <Button
-          title="Confirmar Pedido"
+          title={t('checkout.place_order')}
           onPress={handlePlaceOrder}
           loading={loading}
           style={styles.confirmButton}

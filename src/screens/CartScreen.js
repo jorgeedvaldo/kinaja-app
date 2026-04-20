@@ -9,6 +9,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useCart } from '../context/CartContext';
+import { useTranslation } from 'react-i18next';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import CartItem from '../components/cart/CartItem';
@@ -25,6 +26,7 @@ export default function CartScreen({ navigation }) {
     getSubtotal,
     itemCount,
   } = useCart();
+  const { t } = useTranslation();
 
   const subtotal = getSubtotal();
   const deliveryFee = subtotal > 0 ? 500 : 0;
@@ -37,12 +39,12 @@ export default function CartScreen({ navigation }) {
           <View style={styles.emptyIconCircle}>
             <Feather name="shopping-cart" size={48} color={COLORS.textLight} />
           </View>
-          <Text style={styles.emptyTitle}>Carrinho Vazio</Text>
+          <Text style={styles.emptyTitle}>{t('cart.empty_title')}</Text>
           <Text style={styles.emptyText}>
-            Adicione itens deliciosos do seu restaurante favorito
+            {t('cart.empty_desc')}
           </Text>
           <Button
-            title="Explorar Restaurantes"
+            title={t('cart.explore')}
             onPress={() => navigation.navigate('HomeTab')}
             style={styles.exploreButton}
           />
@@ -55,9 +57,9 @@ export default function CartScreen({ navigation }) {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Carrinho</Text>
+        <Text style={styles.headerTitle}>{t('cart.title')}</Text>
         <TouchableOpacity onPress={clearCart} activeOpacity={0.7}>
-          <Text style={styles.clearText}>Limpar</Text>
+          <Text style={styles.clearText}>{t('cart.clear')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -85,27 +87,27 @@ export default function CartScreen({ navigation }) {
       {/* Summary & Checkout */}
       <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 90 }]}>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Subtotal</Text>
+          <Text style={styles.summaryLabel}>{t('cart.subtotal')}</Text>
           <Text style={styles.summaryValue}>
             Kz {subtotal.toLocaleString('pt-AO')}
           </Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Taxa de entrega</Text>
+          <Text style={styles.summaryLabel}>{t('cart.delivery_fee')}</Text>
           <Text style={styles.summaryValue}>
-            {deliveryFee === 0 ? 'Grátis' : `Kz ${deliveryFee.toLocaleString('pt-AO')}`}
+            {deliveryFee === 0 ? t('common.free') : `Kz ${deliveryFee.toLocaleString('pt-AO')}`}
           </Text>
         </View>
         <View style={styles.divider} />
         <View style={styles.summaryRow}>
-          <Text style={styles.totalLabel}>Total</Text>
+          <Text style={styles.totalLabel}>{t('cart.total')}</Text>
           <Text style={styles.totalValue}>
             Kz {total.toLocaleString('pt-AO')}
           </Text>
         </View>
 
         <Button
-          title={`Finalizar Pedido (${itemCount} ${itemCount === 1 ? 'item' : 'itens'})`}
+          title={`${t('cart.checkout')} (${itemCount} ${itemCount === 1 ? t('common.item') : t('common.items')})`}
           onPress={() => navigation.navigate('Checkout')}
           style={styles.checkoutButton}
           icon={<Feather name="arrow-right" size={18} color={COLORS.accent} />}

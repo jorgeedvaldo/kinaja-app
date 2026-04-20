@@ -1,0 +1,228 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "search": "Search",
+    "error": "Error",
+    "success": "Success",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "free": "Free",
+    "item": "item",
+    "items": "items"
+  },
+  "tabs": {
+    "home": "Home",
+    "orders": "Orders",
+    "cart": "Cart",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "dont_have_account": "Don't have an account?",
+    "already_have_account": "Already have an account?",
+    "login_welcome": "Hello, Welcome back!",
+    "login_subtitle": "Login to continue ordering",
+    "register_welcome": "Create Account",
+    "register_subtitle": "Fill in the details below to get started",
+    "full_name": "Full Name",
+    "confirm_password": "Confirm Password",
+    "email_or_phone": "Email or Phone",
+    "create_account": "Create Account"
+  },
+  "home": {
+    "deliver_to": "Deliver to",
+    "search_placeholder": "What do you want to eat today?",
+    "categories": "Categories",
+    "all_categories": "All Categories",
+    "popular_items": "Most Popular",
+    "open_restaurants": "Open Restaurants",
+    "all_restaurants": "All Restaurants",
+    "see_all": "See All",
+    "offer_special": "Special Offer",
+    "off": "OFF",
+    "first_order": "On your first order",
+    "no_restaurants_title": "No restaurants in the area",
+    "no_restaurants_desc": "Sorry, we don't have any open partners in your area yet.",
+    "all": "All"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty_title": "Empty Cart",
+    "empty_desc": "Add delicious items from your favourite restaurant",
+    "explore": "Explore Restaurants",
+    "clear": "Clear",
+    "subtotal": "Subtotal",
+    "delivery_fee": "Delivery fee",
+    "total": "Total",
+    "checkout": "Place Order"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "delivery_address": "Delivery Address",
+    "change": "Change",
+    "payment_method": "Payment Method",
+    "cash": "Cash",
+    "tpa": "POS Terminal (TPA)",
+    "express": "Multicaixa Express",
+    "order_summary": "Order Summary",
+    "place_order": "Place Order",
+    "success_title": "Order Placed!",
+    "success_desc": "Your order has been sent to the restaurant. You can track its status in the orders tab.",
+    "back_to_home": "Back to Home"
+  },
+  "restaurant": {
+    "delivery_time": "min",
+    "info": "Info",
+    "menu": "Menu",
+    "reviews": "Reviews",
+    "add": "Add"
+  },
+  "product": {
+    "add_to_cart": "Add to Cart",
+    "quantity": "Quantity"
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty_title": "No Orders",
+    "empty_desc": "Your orders will appear here after placing one",
+    "order": "order",
+    "orders_plural": "orders"
+  },
+  "profile": {
+    "title": "Profile",
+    "edit_profile": "Edit Profile",
+    "addresses": "Addresses",
+    "notifications": "Notifications",
+    "help_support": "Help & Support",
+    "about": "About the App",
+    "logout": "Logout",
+    "logout_confirm": "Are you sure you want to log out?",
+    "language": "Language",
+    "portuguese": "Portuguese",
+    "english": "English",
+    "save_changes": "Save Changes",
+    "phone_locked": "Phone number cannot be changed",
+    "profile_updated": "Profile updated successfully!",
+    "profile_update_error": "Could not update profile."
+  },
+  "addresses": {
+    "title": "Saved Addresses",
+    "empty_title": "No saved addresses",
+    "empty_desc": "Add addresses to make ordering easier.",
+    "add_new": "Add New",
+    "remove_title": "Remove Address",
+    "remove_confirm": "Do you really want to remove \"{{name}}\"?",
+    "save_address": "Save Address",
+    "confirm_location": "Confirm Location",
+    "nickname_title": "Give it a name",
+    "nickname_hint": "E.g.: Home, Work, Mum's...",
+    "nickname_placeholder": "Location name"
+  },
+  "faq": {
+    "title": "Help & Support",
+    "faq_title": "Frequently Asked Questions",
+    "terms_title": "Terms and Conditions",
+    "privacy_title": "Privacy Policy",
+    "terms_content": [
+      {
+        "subtitle": "1. Acceptance of Terms",
+        "text": "By downloading, installing or using the KinaJá application (\"App\"), you agree to comply with and be bound by these Terms and Conditions. If you do not agree with any of these terms, you should not use the App."
+      },
+      {
+        "subtitle": "2. Service Description",
+        "text": "KinaJá is a technology intermediation platform that connects customers with partner restaurants in the city of Luanda, Republic of Angola. The platform enables food ordering and real-time delivery tracking."
+      },
+      {
+        "subtitle": "3. Registration and Account",
+        "text": "To use the service, users must create an account by providing true and up-to-date information, including name, phone number and, optionally, email address. Users are responsible for maintaining the confidentiality of their login credentials."
+      },
+      {
+        "subtitle": "4. Orders and Payments",
+        "text": "All prices are displayed in Angolan Kwanzas (Kz) and include product prices and delivery fees. Accepted payment methods include: Cash, POS Terminal (TPA) and Multicaixa Express. Payment is made upon delivery."
+      },
+      {
+        "subtitle": "5. Deliveries",
+        "text": "Estimated delivery time varies depending on the distance between the restaurant and the delivery location, as well as traffic conditions. KinaJá will make every effort to meet estimated times, although exact times cannot be guaranteed."
+      },
+      {
+        "subtitle": "6. Cancellations",
+        "text": "Users may cancel an order as long as the restaurant has not yet started preparation. After restaurant confirmation, cancellation may be subject to a fee."
+      },
+      {
+        "subtitle": "7. Liability",
+        "text": "KinaJá acts exclusively as an intermediary. The quality, food safety and compliance of products are the sole responsibility of partner restaurants. Any complaints regarding food quality should be directed to the restaurant through the App."
+      },
+      {
+        "subtitle": "8. Changes to Terms",
+        "text": "We reserve the right to modify these terms at any time. Changes take effect immediately upon publication in the App. Continued use of the App after changes constitutes acceptance of the new terms."
+      }
+    ],
+    "privacy_content": [
+      {
+        "subtitle": "1. Data Collected",
+        "text": "We collect the following personal information: full name, phone number, email address (optional), GPS location (during App use) and order history. This data is essential for providing our service."
+      },
+      {
+        "subtitle": "2. Purpose of Processing",
+        "text": "Your data is used exclusively to: process and deliver orders, improve user experience, send communications about order status and ensure platform security."
+      },
+      {
+        "subtitle": "3. GPS Location",
+        "text": "Your location is only used while the App is open, to identify nearby restaurants and guide the delivery rider to the delivery address. We do not track your location in the background."
+      },
+      {
+        "subtitle": "4. Data Sharing",
+        "text": "Your personal data is not sold or shared with third parties for marketing purposes. We may share limited information (name and delivery address) with the restaurant and delivery rider assigned to your order."
+      },
+      {
+        "subtitle": "5. Storage and Security",
+        "text": "Data is stored on secure servers with encryption. We implement appropriate technical and organisational measures to protect your data against unauthorised access, loss or destruction."
+      },
+      {
+        "subtitle": "6. User Rights",
+        "text": "You have the right to access, correct or delete your personal data at any time by contacting us through the App or by email at suporte@kinaja.ao."
+      }
+    ],
+    "faq_content": [
+      {
+        "subtitle": "How long does delivery take?",
+        "text": "On average, deliveries are completed within 30 to 50 minutes, depending on the distance between the restaurant and the delivery location, as well as traffic conditions in Luanda. During peak hours (12pm-2pm and 7pm-9pm), times may be slightly longer."
+      },
+      {
+        "subtitle": "What payment methods are accepted?",
+        "text": "We accept three payment methods: Cash — pay the rider directly; POS Terminal (Multicaixa card) — the rider carries a portable terminal; and Multicaixa Express — instant transfer upon delivery."
+      },
+      {
+        "subtitle": "How do I cancel an order?",
+        "text": "You can cancel your order on the order details screen, as long as the restaurant has not yet started preparing your meal. Once preparation has begun, please contact support for assistance."
+      },
+      {
+        "subtitle": "Can I order to a different address?",
+        "text": "Yes! You can save multiple addresses in your profile (e.g. Home, Work, Other) and select the desired delivery address before confirming each order."
+      },
+      {
+        "subtitle": "How can I contact support?",
+        "text": "You can reach us via email at suporte@kinaja.ao or by WhatsApp at +244 923 000 000. Our support hours are Monday to Sunday, 8am to 10pm."
+      },
+      {
+        "subtitle": "Is there a minimum order value?",
+        "text": "We do not currently require a minimum order value. However, each restaurant may set its own minimum, which will be indicated on the restaurant page."
+      },
+      {
+        "subtitle": "How do I track my order?",
+        "text": "After confirming your order, you can follow its progress in real time in the 'My Orders' section. You will receive updates on each stage: confirmed, preparing, on the way and delivered."
+      }
+    ]
+  }
+}

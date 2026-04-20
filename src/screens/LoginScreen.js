@@ -13,6 +13,8 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useCustomAlert } from '../context/AlertContext';
+import { useLanguage } from '../context/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import Button from '../components/common/Button';
@@ -20,6 +22,9 @@ import Button from '../components/common/Button';
 export default function LoginScreen({ navigation }) {
   const { login } = useAuth();
   const { showAlert } = useCustomAlert();
+  const { t } = useTranslation();
+  const { currentLanguage, changeLanguage } = useLanguage();
+
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +33,7 @@ export default function LoginScreen({ navigation }) {
 
   const validate = () => {
     const errs = {};
-    if (!identifier.trim()) errs.identifier = 'O e-mail ou telefone é obrigatório';
+    if (!identifier.trim()) errs.identifier = 'E-mail ou telefone é obrigatório';
     if (!password) errs.password = 'A password é obrigatória';
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -40,7 +45,6 @@ export default function LoginScreen({ navigation }) {
     setLoading(true);
     try {
       await login(identifier.trim(), password);
-      // Navigation handled by AppNavigator
     } catch (error) {
       const message =
         error.response?.data?.message || 'E-mail, número ou senha incorrectos. Tente novamente.';
@@ -48,6 +52,11 @@ export default function LoginScreen({ navigation }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleLanguage = () => {
+    const nextLang = currentLanguage === 'pt' ? 'en' : 'pt';
+    changeLanguage(nextLang);
   };
 
   return (
@@ -60,6 +69,14 @@ export default function LoginScreen({ navigation }) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
+        {/* Language Switcher */}
+        <TouchableOpacity style={styles.langSwitcher} onPress={toggleLanguage}>
+          <Feather name="globe" size={16} color={COLORS.primary} />
+          <Text style={styles.langText}>
+            {currentLanguage === 'pt' ? 'EN' : 'PT'}
+          </Text>
+        </TouchableOpacity>
+
         {/* Logo */}
         <View style={styles.logoContainer}>
           <View style={styles.kinaBlock}>
@@ -70,14 +87,14 @@ export default function LoginScreen({ navigation }) {
           </View>
         </View>
 
-        <Text style={styles.title}>Bem-vindo de volta!</Text>
+        <Text style={styles.title}>{t('auth.login_welcome')}</Text>
         <Text style={styles.subtitle}>
           Faça login para continuar a fazer pedidos
         </Text>
 
         {/* Phone Input */}
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>E-mail ou Telefone</Text>
+          <Text style={styles.label}>{t('auth.email')} ou {t('auth.phone')}</Text>
           <View style={[styles.inputWrapper, errors.identifier && styles.inputError]}>
             <Feather name="user" size={18} color={COLORS.textMuted} />
             <TextInput
@@ -96,7 +113,7 @@ export default function LoginScreen({ navigation }) {
 
         {/* Password Input */}
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>{t('auth.password')}</Text>
           <View style={[styles.inputWrapper, errors.password && styles.inputError]}>
             <Feather name="lock" size={18} color={COLORS.textMuted} />
             <TextInput
@@ -120,7 +137,7 @@ export default function LoginScreen({ navigation }) {
 
         {/* Login Button */}
         <Button
-          title="Entrar"
+          title={t('auth.login')}
           onPress={handleLogin}
           loading={loading}
           style={styles.loginButton}
@@ -128,9 +145,9 @@ export default function LoginScreen({ navigation }) {
 
         {/* Register Link */}
         <View style={styles.registerRow}>
-          <Text style={styles.registerText}>Não tem conta? </Text>
+          <Text style={styles.registerText}>{t('auth.dont_have_account')} </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.registerLink}>Criar Conta</Text>
+            <Text style={styles.registerLink}>{t('auth.register')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -148,6 +165,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 80,
     paddingBottom: 40,
+  },
+  langSwitcher: {
+    position: 'absolute',
+    top: 20,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: COLORS.surface,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  langText: {
+    fontFamily: FONTS.bold,
+    fontSize: 12,
+    color: COLORS.primary,
   },
   logoContainer: {
     alignItems: 'center',

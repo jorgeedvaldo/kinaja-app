@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
 import Button from '../components/common/Button';
@@ -20,6 +21,7 @@ import Button from '../components/common/Button';
 export default function EditProfileScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     name: user?.name || '',
     phone: user?.phone || '',
@@ -33,16 +35,16 @@ export default function EditProfileScreen({ navigation }) {
 
   const handleSave = async () => {
     if (!form.name.trim()) {
-      Alert.alert('Erro', 'O nome é obrigatório');
+      Alert.alert(t('common.error'), t('profile.profile_update_error'));
       return;
     }
     setLoading(true);
     try {
       // TODO: Implement profile update API
-      Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
+      Alert.alert(t('common.success'), t('profile.profile_updated'));
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível atualizar o perfil.');
+      Alert.alert(t('common.error'), t('profile.profile_update_error'));
     } finally {
       setLoading(false);
     }
@@ -62,7 +64,7 @@ export default function EditProfileScreen({ navigation }) {
           >
             <Feather name="arrow-left" size={20} color={COLORS.textPrimary} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Editar Perfil</Text>
+          <Text style={styles.headerTitle}>{t('profile.edit_profile')}</Text>
           <View style={{ width: 40 }} />
         </View>
 
@@ -87,7 +89,7 @@ export default function EditProfileScreen({ navigation }) {
 
           {/* Form */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Nome Completo</Text>
+            <Text style={styles.label}>{t('auth.full_name')}</Text>
             <View style={styles.inputWrapper}>
               <Feather name="user" size={18} color={COLORS.textMuted} />
               <TextInput
@@ -102,7 +104,7 @@ export default function EditProfileScreen({ navigation }) {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Telefone</Text>
+            <Text style={styles.label}>{t('auth.phone')}</Text>
             <View style={[styles.inputWrapper, styles.inputDisabled]}>
               <Feather name="phone" size={18} color={COLORS.textLight} />
               <TextInput
@@ -112,11 +114,11 @@ export default function EditProfileScreen({ navigation }) {
               />
               <Feather name="lock" size={14} color={COLORS.textLight} />
             </View>
-            <Text style={styles.helperText}>O telefone não pode ser alterado</Text>
+            <Text style={styles.helperText}>{t('profile.phone_locked')}</Text>
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{t('auth.email')}</Text>
             <View style={styles.inputWrapper}>
               <Feather name="mail" size={18} color={COLORS.textMuted} />
               <TextInput
@@ -132,7 +134,7 @@ export default function EditProfileScreen({ navigation }) {
           </View>
 
           <Button
-            title="Guardar Alterações"
+            title={t('profile.save_changes')}
             onPress={handleSave}
             loading={loading}
             style={styles.saveButton}
