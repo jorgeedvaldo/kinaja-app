@@ -10,8 +10,9 @@ const restaurantService = {
    * List all open restaurants.
    * @returns {Promise<Array>}
    */
-  getAll: async () => {
-    const response = await api.get(ENDPOINTS.restaurants);
+  getAll: async (categoryId = null) => {
+    const params = categoryId ? `?category_id=${categoryId}` : '';
+    const response = await api.get(`${ENDPOINTS.restaurants}${params}`);
     return response.data?.data || response.data || [];
   },
 

@@ -5,53 +5,42 @@ import COLORS from '../../constants/colors';
 import { FONTS } from '../../constants/typography';
 
 export default function RestaurantCard({ restaurant, onPress }) {
+  // A square default logo
+  const defaultLogo = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(restaurant.name || 'Restaurante') + '&background=FFF4E5&color=FF8C00&size=200';
+  
   return (
     <TouchableOpacity
       style={styles.card}
       onPress={() => onPress(restaurant)}
-      activeOpacity={0.95}
+      activeOpacity={0.9}
     >
-      {/* Cover Image */}
-      <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: restaurant.cover_image || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600&auto=format&fit=crop',
-          }}
-          style={styles.image}
-        />
-        {/* Rating badge */}
-        <View style={styles.ratingBadge}>
-          <Feather name="star" size={12} color={COLORS.star} />
-          <Text style={styles.ratingText}>
-            {restaurant.rating || '0.0'}
-          </Text>
-        </View>
-      </View>
-
-      {/* Info */}
+      <Image
+        source={{ uri: restaurant.cover_image || defaultLogo }}
+        style={styles.logo}
+      />
+      
       <View style={styles.info}>
-        <Text style={styles.name}>{restaurant.name}</Text>
-        <Text style={styles.cuisine}>
-          {restaurant.cuisine_type || 'Variada'}
+        <View style={styles.headerRow}>
+          <Text style={styles.name} numberOfLines={1}>{restaurant.name}</Text>
+          <View style={styles.ratingBadge}>
+            <Feather name="star" size={12} color={COLORS.star} />
+            <Text style={styles.ratingText}>{restaurant.rating || '4.5'}</Text>
+          </View>
+        </View>
+
+        <Text style={styles.cuisine} numberOfLines={1}>
+          {restaurant.cuisine_type || 'Culinária Variada'}
         </Text>
 
         <View style={styles.meta}>
-          {/* Delivery info */}
           <View style={styles.metaItem}>
-            <View style={[styles.metaIcon, styles.metaIconAccent]}>
-              <Feather name="truck" size={12} color={COLORS.primary} />
-            </View>
-            <Text style={styles.metaText}>Entrega Grátis</Text>
+            <Feather name="truck" size={12} color={COLORS.primary} />
+            <Text style={styles.metaText}>Kz 500</Text>
           </View>
-
-          {/* Prep time */}
+          <View style={styles.metaDot} />
           <View style={styles.metaItem}>
-            <View style={styles.metaIcon}>
-              <Feather name="clock" size={12} color={COLORS.textSecondary} />
-            </View>
-            <Text style={styles.metaText}>
-              {restaurant.prep_time_mins || 30} min
-            </Text>
+            <Feather name="clock" size={12} color={COLORS.textSecondary} />
+            <Text style={styles.metaText}>{restaurant.prep_time_mins || 30} min</Text>
           </View>
         </View>
       </View>
@@ -61,87 +50,83 @@ export default function RestaurantCard({ restaurant, onPress }) {
 
 const styles = StyleSheet.create({
   card: {
+    flexDirection: 'row',
     backgroundColor: COLORS.surface,
-    borderRadius: 24,
-    overflow: 'hidden',
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.border,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
-    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
     elevation: 2,
+    marginBottom: 0,
   },
-  imageContainer: {
-    height: 144,
-    width: '100%',
-    overflow: 'hidden',
+  logo: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    backgroundColor: COLORS.backgroundGray,
+    marginRight: 16,
   },
-  image: {
-    width: '100%',
-    height: '100%',
+  info: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  name: {
+    flex: 1,
+    fontFamily: FONTS.bold,
+    fontSize: 16,
+    color: COLORS.dark,
+    marginRight: 8,
   },
   ratingBadge: {
-    position: 'absolute',
-    top: 12,
-    left: 12,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: COLORS.surface,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    backgroundColor: '#FFF8E1',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
   },
   ratingText: {
     fontFamily: FONTS.bold,
     fontSize: 12,
-    color: COLORS.textPrimary,
-  },
-  info: {
-    padding: 16,
-  },
-  name: {
-    fontFamily: FONTS.bold,
-    fontSize: 18,
-    color: COLORS.dark,
+    color: '#F59E0B',
   },
   cuisine: {
     fontFamily: FONTS.medium,
-    fontSize: 12,
+    fontSize: 13,
     color: COLORS.textSecondary,
-    marginTop: 4,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   meta: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
   },
   metaItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
   },
-  metaIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: COLORS.backgroundGray,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  metaIconAccent: {
-    backgroundColor: COLORS.accent,
-  },
   metaText: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: FONTS.medium,
     fontSize: 12,
     color: COLORS.textSecondary,
+  },
+  metaDot: {
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: COLORS.borderMedium,
+    marginHorizontal: 8,
   },
 });

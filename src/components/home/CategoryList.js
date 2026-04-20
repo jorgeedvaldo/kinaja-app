@@ -50,6 +50,20 @@ export default function CategoryList({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
+        {/* "Todos" Option */}
+        <TouchableOpacity
+          style={[styles.chip, !selectedId && styles.chipActive]}
+          onPress={() => onSelect(null)}
+          activeOpacity={0.8}
+        >
+          <View style={[styles.iconContainer, !selectedId && styles.iconContainerActive]}>
+            <Text style={styles.emoji}>🍱</Text>
+          </View>
+          <Text style={[styles.chipText, !selectedId && styles.chipTextActive]}>
+            Todos
+          </Text>
+        </TouchableOpacity>
+
         {categories.map((category) => {
           const isActive = category.id === selectedId;
           const emoji = CATEGORY_EMOJIS[category.name?.toLowerCase()] || '🍽️';

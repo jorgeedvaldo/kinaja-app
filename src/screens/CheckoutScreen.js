@@ -12,6 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useLocation } from '../context/LocationContext';
 import { useCustomAlert } from '../context/AlertContext';
 import COLORS from '../constants/colors';
 import { FONTS } from '../constants/typography';
@@ -22,6 +23,7 @@ export default function CheckoutScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { showAlert } = useCustomAlert();
+  const { currentLocation, loadingLocation } = useLocation();
   const {
     items,
     restaurantId,
@@ -31,25 +33,23 @@ export default function CheckoutScreen({ navigation }) {
   } = useCart();
   const [loading, setLoading] = useState(false);
 
-  console.log('[DEBUG-CHECKOUT]', { items, restaurantId, restaurantName });
+  console.log('[DEBUG-CHECKOUT]', { items, restaurantId, restaurantName, currentLocation });
 
   const subtotal = getSubtotal();
   const deliveryFee = 500;
   const total = subtotal + deliveryFee;
 
   const handlePlaceOrder = async () => {
-    if (loading) return; // Prevent multiple clicks
-    
+    if (loading) return; 
     setLoading(true);
-    console.log('[DEBUG-CHECKOUT] Starting handlePlaceOrder...', { 
-      restaurantId, 
-      itemCount: items.length 
-    });
-
+    
     try {
       const orderData = {
         restaurant_id: restaurantId,
         delivery_fee: deliveryFee,
+        delivery_address: currentLocation?.address || '',
+        latitude: currentLocation?.latitude || null,
+        longitude: currentLocation?.longitude || null,
         items: items.map((item) => ({
           product_id: item.product.id,
           quantity: item.quantity,
@@ -57,7 +57,6 @@ export default function CheckoutScreen({ navigation }) {
         })),
       };
 
-      console.log('[DEBUG-CHECKOUT] Sending to API:', orderData);
       const order = await orderService.create(orderData);
       console.log('[DEBUG-CHECKOUT] Success response:', order);
 
@@ -128,10 +127,22 @@ export default function CheckoutScreen({ navigation }) {
             <Feather name="map-pin" size={18} color={COLORS.primary} />
             <Text style={styles.sectionTitle}>Endereço de Entrega</Text>
           </View>
-          <View style={styles.addressCard}>
-            <Text style={styles.addressText}>Luanda, Talatona</Text>
-            <Text style={styles.addressSub}>Rua principal, próximo ao mercado</Text>
-          </View>
+          {loadingLocation ? (
+            <Text style={styles.addressText}>A ler localização...</Text>
+          ) : (
+            <TouchableOpacity 
+              style={styles.addressCard} 
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('LocationSelect')}
+            >
+              <Text style={styles.addressText}>
+                {currentLocation?.address || 'Sem localização'}
+              </Text>
+              <Text style={styles.addressSub}>
+                {currentLocation?.subAddress || 'Clique para definir localização correta no mapa'}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Restaurant */}

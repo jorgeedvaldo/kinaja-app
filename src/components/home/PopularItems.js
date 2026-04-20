@@ -18,14 +18,6 @@ export default function PopularItems({ products = [], onItemPress, onAddToCart, 
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Mais Pedidos</Text>
-        <TouchableOpacity
-          style={styles.viewAll}
-          onPress={onViewAll}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.viewAllText}>Ver Todos</Text>
-          <Feather name="chevron-right" size={14} color={COLORS.textSecondary} />
-        </TouchableOpacity>
       </View>
 
       <ScrollView

@@ -13,6 +13,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import RestaurantDetailScreen from '../screens/RestaurantDetailScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
+import LocationSelectScreen from '../screens/LocationSelectScreen';
 import CartScreen from '../screens/CartScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 import OrdersScreen from '../screens/OrdersScreen';
@@ -35,6 +36,7 @@ function HomeStackNav() {
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="RestaurantDetail" component={RestaurantDetailScreen} />
       <HomeStack.Screen name="ProductDetail" component={ProductDetailScreen} />
+      <HomeStack.Screen name="LocationSelect" component={LocationSelectScreen} />
     </HomeStack.Navigator>
   );
 }
@@ -117,7 +119,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
     <View
       style={[
         styles.tabBarContainer,
-        { paddingBottom: Platform.OS === 'ios' ? insets.bottom : 10 },
+        { paddingBottom: Math.max(insets.bottom, 10) },
       ]}
     >
       {state.routes.map((route, index) => {

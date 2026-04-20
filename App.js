@@ -16,6 +16,7 @@ import {
 import { AuthProvider } from './src/context/AuthContext';
 import { CartProvider } from './src/context/CartContext';
 import { AlertProvider } from './src/context/AlertContext';
+import { LocationProvider } from './src/context/LocationContext';
 import AppNavigator from './src/navigation/AppNavigator';
 
 // Keep splash screen visible while fonts load
@@ -45,12 +46,14 @@ export default function App() {
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <AlertProvider>
         <AuthProvider>
-          <CartProvider>
-            <NavigationContainer>
-              <AppNavigator />
-              <StatusBar style="dark" />
-            </NavigationContainer>
-          </CartProvider>
+          <LocationProvider>
+            <CartProvider>
+              <NavigationContainer>
+                <AppNavigator />
+                <StatusBar style="dark" />
+              </NavigationContainer>
+            </CartProvider>
+          </LocationProvider>
         </AuthProvider>
       </AlertProvider>
     </SafeAreaProvider>
